@@ -7,6 +7,7 @@ import SecondQuestion from './Pages/second-question';
 import ThirdQuestion from './Pages/third--question';
 import FourthQuestion from './Pages/fourth-question';
 import FifthQuestioon from './Pages/fifth-question';
+import SixthQuestion from './Pages/sixth-question';
 
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/third-question" element={<ThirdQuestion />} />
         <Route path="/fourth-question" element={<FourthQuestion />} />
         <Route path="/fifth-question" element={<FifthQuestioon />} />
+        <Route path="/sixth-question" element={<SixthQuestion />} />
       </Routes>
     </NativeRouter>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Text,
     Div,
@@ -13,29 +13,17 @@ import { useLocation, useNavigate } from 'react-router-native';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
 import Header from '../Components/header';
 
-const FifthQuestioon = () => {
+const SixthQuestion = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const [selected, setSelected] = useState([]);
-    const montoReparto = location.state.montoReparto;
-    const arregloMayor = [
-        "aumentoProuctividad",
-        "aumentoVentas",
-        "entornoFavorable",
-        "nuevasOportunidades"
-    ]
-    const arregloMenor = [
-        "disminucionProductividad",
-        "inseguridad",
-        "entorno"
+    const hayUtilidades = location.state.utilidades;
+    const [montoReparto, setMontoReparto] = useState("");
+    const monto = ["Mayor", "Igual", "Menor"]
+    const razones = [
+        "Disminución en la productividad de las y los colaboradores",
+        "Afectaciones por inseguridad",
+        "Afectaciones por el entorno político y económico"
     ];
-
-    const updateSelected = useCallback(
-        (value) => {
-            setSelected([...selected, value]);
-        },
-        [selected]
-    );
 
     function handleBackButtonClick() {
         navigate(-1);
@@ -63,20 +51,20 @@ const FifthQuestioon = () => {
                 <Div w="12.18%" bg="#48bb78" />
                 <Div w="12.18%" bg="#48bb78" />
                 <Div w="12.18%" bg="#48bb78" />
-                <Div w="12.18%" bg="#48bb78" />
+                <Div w="12.18%" bg="#DFDFDF" />
                 <Div w="12.18%" bg="#DFDFDF" />
                 <Div w="12.18%" bg="#DFDFDF" />
             </Div>
             <Header />
             <View style={styles.page}>
                 <MainHeading textAlign="left">
-                    {montoReparto === "Mayor" ? "¿Cuáles fueron las razones por las que el monto de reparto de utilidades fue mayor?" : "¿Cuáles fueron las razones por las que habrá menor reparto de utilidades?"}
+                    {hayUtilidades ? "En comparación con el año anterior ¿Cómo será el monto repartido de PTU?" : "¿Cuáles fueron las razones por las que no hubo reparto de utilidades?"}
                 </MainHeading>
-                {montoReparto === "Mayor" ? (
+                {hayUtilidades ? (
                     <Div mt={40} flexDir="column">
-                        <Checkbox.Group column>
-                            {arregloMayor.map((item) => (
-                                <Checkbox key={item} value={item} onPress={() => updateSelected(item)}>
+                        <Radio.Group column>
+                            {monto.map((item) => (
+                                <Radio key={item} value={item} onPress={() => setMontoReparto(item)}>
                                     {({ checked }) => (
                                         <Div
                                             w="100%"
@@ -87,31 +75,18 @@ const FifthQuestioon = () => {
                                             my={10}
                                             alignItems='center'
                                         >
-                                            <Text
-                                                fontSize="xl"
-                                                color={checked ? "white" : "gray800"}
-                                                numberOfLines={1}
-                                            >
-                                                {item === "aumentoProuctividad" ?
-                                                    "Aumento en la productividad de las y los colaboradores" :
-                                                    item === "aumentoVentas" ?
-                                                        "Aumento de Ventas" :
-                                                        item === "entornoFavorable" ?
-                                                            "Entorno económico favorable" :
-                                                            "Nuevas oportunidades de negocio"
-                                                }
-                                            </Text>
+                                            <Text fontSize="xl" color={checked ? "white" : "gray800"} numberOfLines={1}>{item}</Text>
                                         </Div>
                                     )}
-                                </Checkbox>
+                                </Radio>
                             ))}
-                        </Checkbox.Group>
+                        </Radio.Group>
                     </Div>
                 ) : (
                     <Div mt={40} flexDir="column">
                         <Checkbox.Group column>
-                            {arregloMenor.map((item) => (
-                                <Checkbox key={item} value={item} onPress={() => updateSelected(item)}>
+                            {razones.map((item) => (
+                                <Checkbox key={item} value={item} onPress={() => setMontoReparto(item)}>
                                     {({ checked }) => (
                                         <Div
                                             w="100%"
@@ -122,18 +97,7 @@ const FifthQuestioon = () => {
                                             my={10}
                                             alignItems='center'
                                         >
-                                            <Text
-                                                fontSize="xl"
-                                                color={checked ? "white" : "gray800"}
-                                                numberOfLines={1}
-                                            >
-                                                {item === "disminucionProductividad" ?
-                                                    "Disminución en la productividad de las y los colaboradores" :
-                                                    item === "inseguridad" ?
-                                                        "Afectaciones por inseguridad" :
-                                                        "Afectaciones por el entorno político y económico"
-                                                }
-                                            </Text>
+                                            <Text fontSize="xl" color={checked ? "white" : "gray800"} numberOfLines={1}>{item}</Text>
                                         </Div>
                                     )}
                                 </Checkbox>
@@ -149,8 +113,11 @@ const FifthQuestioon = () => {
                         rounded="circle"
                         fontWeight='700'
                         fontSize="xl"
-                        disabled={selected < 1}
-                        onPress={() => navigate("/sixth-question")}
+                        disabled={montoReparto === ""}
+                        onPress={() => montoReparto === "Igual" ?
+                            navigate("/sixth-question")
+                            : navigate("/fifth-question", { state: { montoReparto: montoReparto } })
+                        }
                     >
                         Siguiente
                     </Button>
@@ -170,4 +137,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default FifthQuestioon;
+export default SixthQuestion;

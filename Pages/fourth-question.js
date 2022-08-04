@@ -86,7 +86,7 @@ const FourthQuestion = () => {
                     <Div mt={40} flexDir="column">
                         <Checkbox.Group column>
                             {razones.map((item) => (
-                                <Checkbox key={item} value={item}>
+                                <Checkbox key={item} value={item} onPress={() => setMontoReparto(item)}>
                                     {({ checked }) => (
                                         <Div
                                             w="100%"
@@ -113,6 +113,11 @@ const FourthQuestion = () => {
                         rounded="circle"
                         fontWeight='700'
                         fontSize="xl"
+                        disabled={montoReparto === ""}
+                        onPress={() => montoReparto === "Igual" ?
+                            navigate("/sixth-question")
+                            : navigate("/fifth-question", { state: { montoReparto: montoReparto } })
+                        }
                     >
                         Siguiente
                     </Button>
